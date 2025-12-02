@@ -26,6 +26,10 @@ from hamer.utils import recursive_to
 from hamer.utils.geometry import aa_to_rotmat, perspective_projection
 from hamer.datasets.vitdet_dataset import ViTDetDataset, DEFAULT_MEAN, DEFAULT_STD
 from hamer.utils.renderer import Renderer, cam_crop_to_full
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
 from ultralytics import YOLO
 import hamer
 
@@ -1608,7 +1612,7 @@ def run_hamer_on_cleaned_bboxes(raw_data, model, model_cfg, renderer, args):
 # ============================================================================
 
 def main():
-    parser = argparse.ArgumentParser(description='HaMeR with 3-pass architecture using YOLO hand detector')
+    parser = argparse.ArgumentParser(description='HaMeR & YOLO hand detector & Posetrack')
     parser.add_argument('--checkpoint', type=str, default=None, help='Path to pretrained model checkpoint')
     parser.add_argument('--img_folder', type=str, default='images', help='Folder with input images')
     parser.add_argument('--out_folder', type=str, default='out_demo', help='Output folder to save rendered results')
@@ -1618,11 +1622,11 @@ def main():
     parser.add_argument('--save_mesh', dest='save_mesh', action='store_true', default=False, help='If set, save meshes to disk also')
     parser.add_argument('--batch_size', type=int, default=1, help='Batch size for inference/fitting')
     parser.add_argument('--rescale_factor', type=float, default=1.3, help='Factor for padding the bbox')
-    parser.add_argument('--file_type', nargs='+', default=['*.jpg', '*.png'], help='List of file extensions to consider')
+    parser.add_argument('--file_type', nargs='+', default=['*.jpg', '*.png', '*.jpeg'], help='List of file extensions to consider')
     parser.add_argument('--conf', type=float, default=2.0, help='Factor for padding the bbox')
     parser.add_argument('--type', type=str, default='EgoDexter', help='Path to pretrained model checkpoint')
     parser.add_argument('--render', dest='render', action='store_true', default=False, help='If set, render side view also')
-    parser.add_argument('--yolo_model', type=str, default='./pretrained_models/detector.pt', 
+    parser.add_argument('--yolo_model', type=str, default='/home/zvc/Project/VHand/_DATA/bbox_det_ckpts/detector.pt', 
                         help='Path to YOLO hand detector model (like WiLoR detector.pt)')
     
     args = parser.parse_args()
@@ -1644,7 +1648,7 @@ def main():
     model = model.to(device)
     model.eval()
     
-    # Load YOLO hand detector (like WiLoR)
+    # Load YOLO hand detector
     print(f"\nLoading YOLO hand detector: {args.yolo_model}")
     yolo_detector = YOLO(args.yolo_model)
     yolo_detector.to(device)
