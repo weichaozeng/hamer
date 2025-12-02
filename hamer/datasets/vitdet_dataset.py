@@ -21,6 +21,7 @@ class ViTDetDataset(torch.utils.data.Dataset):
                  boxes: np.array,
                  right: np.array,
                  vit_keypoints: np.array,
+                 track_ids: np.array,
                  rescale_factor=2.5,
                  train: bool = False,
                  **kwargs):
@@ -42,6 +43,7 @@ class ViTDetDataset(torch.utils.data.Dataset):
         self.personid = np.arange(len(boxes), dtype=np.int32)
         self.right = right.astype(np.float32)
         self.vit_keypoints = vit_keypoints.astype(np.float32)
+        self.track_ids = track_ids.astype(np.int32)
         self.height, self.weight = boxes[:, 3]-boxes[:, 1], boxes[:, 2]-boxes[:, 0]
 
     def __len__(self) -> int:
@@ -100,5 +102,6 @@ class ViTDetDataset(torch.utils.data.Dataset):
         item['2d'] = self.vit_keypoints[idx].copy()
         item['inv_trans'] = inv_trans.copy()
         item['bbox'] = np.array([center[0], center[1], bbox_size, bbox_size])
+        item['track_id'] = self.track_ids[idx].copy()
         # print(item['bbox'], item['img_patch'].shape)
         return item
