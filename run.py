@@ -147,7 +147,7 @@ def create_video_from_images(image_folder, output_video_path, fps=30):
 # ============================================================================
 # PASS 1: Extract all raw bboxes using YOLO hand detector
 # ============================================================================
-def extract_raw_bboxes(args, img_paths, detector, vis_dir=None, det_thresh=0.5, tracker='posetrack'):
+def extract_raw_bboxes(img_paths, detector, vis_dir=None, det_thresh=0.5, tracker='posetrack'):
     """
     Pass 1: Extract raw hand bboxes using YOLO hand detector.
     
