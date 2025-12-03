@@ -527,7 +527,7 @@ def plot_bbox_trajectories(data_track, vis_dir, filename='bbox_trajectories.png'
     import matplotlib
     matplotlib.use('Agg')  # Use non-interactive backend
     import matplotlib.pyplot as plt
-    plt.figure(figsize=(12, 8), dpi=)
+    plt.figure(figsize=(12, 8), dpi=120)
     ax = plt.gca()
     cmap_left = plt.cm.Blues
     cmap_right = plt.cm.Reds
