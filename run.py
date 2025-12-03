@@ -689,7 +689,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 verts[:, 0] = (2 * is_right_val - 1) * verts[:, 0]
                 pred_joints[:, 0] = (2 * is_right_val - 1) * pred_joints[:, 0]
                 cam_t = pred_cam_t_full[n]
-                track_id = batch['track_id'][n].detach().cpu().numpy()
+                track_id = batch['track_id'][n].detach().cpu().numpy().item()
                 mano_params = out['pred_mano_params'][n]
                 mano_params['is_right'] = is_right_val
 
@@ -702,7 +702,6 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 all_track_ids.append(track_id)
                 all_verts.append(verts)
 
-                print(track_id)
                 if track_id not in result_data_track:
                     result_data_track[track_id] = {
                         'tracked_id': track_id,
