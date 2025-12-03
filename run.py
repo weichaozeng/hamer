@@ -74,43 +74,6 @@ def compute_bbox_from_keypoints(keypoints, img_shape, scale_factor=1.0, max_size
     return np.array([x_min, y_min, x_max, y_max])
 
 
-def compute_iou(bbox1, bbox2):
-    """Compute IoU between two bboxes."""
-    x1_min, y1_min, x1_max, y1_max = bbox1
-    x2_min, y2_min, x2_max, y2_max = bbox2
-    
-    inter_x_min = max(x1_min, x2_min)
-    inter_y_min = max(y1_min, y2_min)
-    inter_x_max = min(x1_max, x2_max)
-    inter_y_max = min(y1_max, y2_max)
-    
-    inter_area = max(0, inter_x_max - inter_x_min) * max(0, inter_y_max - inter_y_min)
-    bbox1_area = (x1_max - x1_min) * (y1_max - y1_min)
-    bbox2_area = (x2_max - x2_min) * (y2_max - y2_min)
-    union_area = bbox1_area + bbox2_area - inter_area
-    
-    return inter_area / union_area if union_area > 0 else 0
-
-
-def compute_containment_ratio(bbox1, bbox2):
-    """
-    Compute how much bbox1 is contained within bbox2.
-    Returns the ratio of bbox1's area that overlaps with bbox2.
-    """
-    x1_min, y1_min, x1_max, y1_max = bbox1
-    x2_min, y2_min, x2_max, y2_max = bbox2
-    
-    inter_x_min = max(x1_min, x2_min)
-    inter_y_min = max(y1_min, y2_min)
-    inter_x_max = min(x1_max, x2_max)
-    inter_y_max = min(y1_max, y2_max)
-    
-    inter_area = max(0, inter_x_max - inter_x_min) * max(0, inter_y_max - inter_y_min)
-    bbox1_area = (x1_max - x1_min) * (y1_max - y1_min)
-    
-    return inter_area / bbox1_area if bbox1_area > 0 else 0
-
-
 def create_video_from_images(image_folder, output_video_path, fps=30):
     """Create MP4 video from images in a folder using imageio (same as src_cam video)."""
     image_folder = Path(image_folder)
@@ -271,10 +234,10 @@ def enlarge_bboxes(bboxes, scale=1.2, img_shape=None):
     # Optionally clip to image boundaries
     if img_shape is not None:
         H, W = img_shape[:2]
-        new_x1 = max(0, min(W-1, new_x1))
-        new_y1 = max(0, min(H-1, new_y1))
-        new_x2 = max(0, min(W-1, new_x2))
-        new_y2 = max(0, min(H-1, new_y2))
+        new_x1 = np.clip(new_x1, 0, W - 1)
+        new_y1 = np.clip(new_y1, 0, H - 1)
+        new_x2 = np.clip(new_x2, 0, W - 1)
+        new_y2 = np.clip(new_y2, 0, H - 1)
     if bboxes.shape[1] > 4:
         conf = bboxes[:, 4:5]
         new_bboxes = np.stack([new_x1, new_y1, new_x2, new_y2], axis=1)
