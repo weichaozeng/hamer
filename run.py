@@ -188,7 +188,7 @@ def extract_raw_bboxes(img_paths, detector, vis_dir=None, det_thresh=0.5, tracke
         }
         
         if tracker == 'posetrack':
-            result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="ultralytics/custom/posetrack.yaml")
+            result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="posetrack.yaml")
         elif tracker == 'botsort':
             result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="botsort.yaml")
         elif tracker == 'bytetrack':
