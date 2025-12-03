@@ -786,7 +786,8 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
     # Create video from Pass 3 rendered results
     render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
     if os.path.exists(render_path):
-        video_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}.mp4')
+        seq_name = os.path.basename(os.path.dirname(os.path.dirname(args.res_folder)))
+        video_path = os.path.join(os.path.dirname(args.res_folder), f'{seq_name}_render_all_{model_cfg.EXTRA.FOCAL_LENGTH}.mp4')
         create_video_from_images(render_path, video_path, fps=30)
     
     return result_data_frame, result_data_track
