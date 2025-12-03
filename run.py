@@ -702,6 +702,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 all_track_ids.append(track_id)
                 all_verts.append(verts)
 
+                print(track_id)
                 if track_id not in result_data_track:
                     result_data_track[track_id] = {
                         'tracked_id': track_id,
