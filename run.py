@@ -185,9 +185,7 @@ def extract_raw_bboxes(img_paths, detector, vis_dir=None, det_thresh=0.5, tracke
                     }
                 raw_data_track[track_id]['frame_indices'].append(frame_idx)
                 raw_data_track[track_id]['boxes'].append(np.hstack([boxes[i], box_confs[i]]))
-                print(poses.shape)
-                print(pose_confs.shape)
-                raw_data_track[track_id]['poses'].append(np.concatenate([poses[i], pose_confs[i, None]], axis=1))
+                raw_data_track[track_id]['poses'].append(np.concatenate([poses[i], pose_confs[i][..., None]], axis=1))
                 raw_data_track[track_id]['handedness'].append(handedness[i])
         
         # Visualize raw bboxes
