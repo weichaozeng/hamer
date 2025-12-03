@@ -828,8 +828,8 @@ def main():
     print(f"Found {len(img_paths)} images in {img_folder}")
     
     # Load models
-    print("\nLoading models...")
     CACHE_DIR_HAMER = args.checkpoint
+    print(f"\nLoading models from {CACHE_DIR_HAMER}/_DATA/hamer_ckpts")
     download_models(CACHE_DIR_HAMER)
     model, model_cfg = load_hamer(args.checkpoint)
     model = model.to(device)
