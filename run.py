@@ -29,8 +29,9 @@ from hamer.utils.renderer import Renderer, cam_crop_to_full
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
-from ultralytics.ultralytics import YOLO
+ultralytics_dir = os.path.join(parent_dir, 'ultralytics')
+sys.path.append(ultralytics_dir)
+from ultralytics import YOLO
 import hamer
 
 LIGHT_BLUE = (0.65098039, 0.74117647, 0.85882353)
