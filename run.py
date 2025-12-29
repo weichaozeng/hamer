@@ -628,6 +628,10 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 'verts': [],
                 'shot': 0
             }
+            if args.render:
+                render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+                os.makedirs(render_path, exist_ok=True)
+                cv2.imwrite(os.path.join(render_path, f'{img_fn}.jpg'), img_cv2)
             continue
         
         track_ids = frame_data['track_ids']
