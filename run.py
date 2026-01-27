@@ -629,7 +629,8 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 'shot': 0
             }
             if args.render:
-                render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+                # render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+                render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all')
                 os.makedirs(render_path, exist_ok=True)
                 cv2.imwrite(os.path.join(render_path, f'{img_fn}.jpg'), img_cv2)
             continue
@@ -783,15 +784,18 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
             input_img_overlay = input_img[:, :, :3] * (1 - cam_view[:, :, 3:]) + cam_view[:, :, :3] * cam_view[:, :, 3:]
             
             # Save rendered result
-            render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+            # render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+            render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all')
             os.makedirs(render_path, exist_ok=True)
             cv2.imwrite(os.path.join(render_path, f'{img_fn}.jpg'), 255 * input_img_overlay[:, :, ::-1])
     
     # Create video from Pass 3 rendered results
-    render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+    # render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all_{model_cfg.EXTRA.FOCAL_LENGTH}')
+    render_path = os.path.join(os.path.dirname(args.res_folder), f'render_all')
     if os.path.exists(render_path):
         seq_name = os.path.basename(os.path.dirname(os.path.dirname(args.res_folder)))
-        video_path = os.path.join(os.path.dirname(args.res_folder), f'{seq_name}_render_all_{model_cfg.EXTRA.FOCAL_LENGTH}.mp4')
+        # video_path = os.path.join(os.path.dirname(args.res_folder), f'{seq_name}_render_all_{model_cfg.EXTRA.FOCAL_LENGTH}.mp4')
+        video_path = os.path.join(os.path.dirname(args.res_folder), f'{seq_name}_render_all.mp4')
         create_video_from_images(render_path, video_path, fps=30)
     
     return result_data_frame, result_data_track
@@ -851,7 +855,8 @@ def main():
     # Create visualization directory
     vis_dir = None
     if args.render and args.res_folder is not None:
-        vis_dir = os.path.join(os.path.dirname(args.res_folder), f'bbox_vis_{model_cfg.EXTRA.FOCAL_LENGTH}')
+        # vis_dir = os.path.join(os.path.dirname(args.res_folder), f'bbox_vis_{model_cfg.EXTRA.FOCAL_LENGTH}')
+        vis_dir = os.path.join(os.path.dirname(args.res_folder), f'bbox_vis')
         os.makedirs(vis_dir, exist_ok=True)
         print(f"\nBbox visualizations will be saved to: {vis_dir}")
     
@@ -870,10 +875,11 @@ def main():
     with open(output_path, 'wb') as f:
         pickle.dump(result_data_frame, f)
 
-    track_dir = os.path.join(os.path.dirname(args.res_folder), f'track_{model_cfg.EXTRA.FOCAL_LENGTH}')
+    # track_dir = os.path.join(os.path.dirname(args.res_folder), f'track_{model_cfg.EXTRA.FOCAL_LENGTH}')
+    track_dir = os.path.join(os.path.dirname(args.res_folder), f'track')
     os.makedirs(track_dir, exist_ok=True)
     for track_id, track_data in result_data_track.items():
-        track_path = os.path.join(track_dir, f'track_{track_id}.pkl')
+        track_path = os.path.join(track_dir, f'track_{track_id:03d}.pkl')
         with open(track_path, 'wb') as f:
             pickle.dump(track_data, f)
     
