@@ -652,6 +652,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
         all_mano_params = []
         all_pred_2d = []
         all_bboxes = []
+        all_poses = []
         all_track_ids = []
         
         for batch in dataloader:
@@ -704,6 +705,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                 all_right.append(is_right_val)
                 all_pred_2d.append(pred_joints)
                 all_bboxes.append(batch['bbox'][n].detach().cpu().numpy())
+                all_poses.append(batch['2d'][n].detach().cpu().numpy())
                 all_track_ids.append(track_id)
                 all_verts.append(verts)
 
@@ -712,6 +714,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                         'tracked_id': track_id,
                         'frame_indices': [],
                         'boxes': [],
+                        'poses': [],
                         'pred_cam': [],
                         'mano': [],
                         'cam_trans': [],
@@ -722,6 +725,7 @@ def run_hamer_on_cleaned_bboxes(cleaned_data_frame, model, model_cfg, renderer, 
                     }
                 result_data_track[track_id]['frame_indices'].append(frame_idx)
                 result_data_track[track_id]['boxes'].append(batch['bbox'][n].detach().cpu().numpy())
+                result_data_track[track_id]['poses'].append(batch['2d'][n].detach().cpu().numpy())
                 result_data_track[track_id]['pred_cam'].append(pred_cam[n].detach().cpu().numpy())
                 result_data_track[track_id]['mano'].append(mano_params)
                 result_data_track[track_id]['cam_trans'].append(cam_t)
