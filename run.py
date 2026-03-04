@@ -826,7 +826,7 @@ def main():
     parser.add_argument('--render', dest='render', action='store_true', default=False, help='If set, render side view also')
     parser.add_argument('--yolo_model', type=str, default='/home/zvc/Project/VHand/_DATA/bbox_det_ckpts/detector.pt', 
                         help='Path to hand detector model')
-    parser.add_argument('--det_thresh', type=float, default=0.5)
+    parser.add_argument('--det_thresh', type=float, default=0.4)
     parser.add_argument('--tracker', type=str, default='posetrack')
     
     args = parser.parse_args()
