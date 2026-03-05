@@ -34,6 +34,17 @@ sys.path.append(ultralytics_dir)
 from ultralytics import YOLO
 import hamer
 
+if torch.cuda.is_available():
+    autocast = torch.cuda.amp.autocast
+else:
+    class autocast:
+        def __init__(self, enabled=True):
+            pass
+        def __enter__(self):
+            pass
+        def __exit__(self, *args):
+            pass
+
 LIGHT_BLUE = (0.65098039, 0.74117647, 0.85882353)
 
 openpose_indices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -149,13 +160,14 @@ def extract_raw_bboxes(img_paths, detector, vis_dir=None, det_thresh=0.5, tracke
             'poses': None, # will be [[[x1, y1, conf_kp_1], ..., [x21, y21, conf_kp_21]]]
             'handedness': None,
         }
-        
-        if tracker == 'posetrack':
-            result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="/home/zvc/Project/VHand/third_party/ultralytics/ultralytics/custom/posetrack.yaml")
-        elif tracker == 'botsort':
-            result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="botsort.yaml")
-        elif tracker == 'bytetrack':
-            result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="bytetrack.yaml")     
+        with torch.no_grad():
+            with autocast():
+                if tracker == 'posetrack':
+                    result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="/home/zvc/Project/VHand/third_party/ultralytics/ultralytics/custom/posetrack.yaml")
+                elif tracker == 'botsort':
+                    result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="botsort.yaml")
+                elif tracker == 'bytetrack':
+                    result = detector.track(frame_cv2, conf=det_thresh, persist=True, verbose=False, tracker="bytetrack.yaml")     
 
         frame_shape = frame_cv2.shape
         if not result[0].boxes.id is None:
