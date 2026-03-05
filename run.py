@@ -147,6 +147,11 @@ def extract_raw_bboxes(img_paths, detector, vis_dir=None, det_thresh=0.5, tracke
     raw_data_frame = []
     raw_data_track = {}
 
+    if hasattr(detector.predictor, 'trackers') and detector.predictor.trackers:
+        detector.predictor.trackers[0].reset()
+    else:
+        print("Tracker not found or not initialized.")
+
     for frame_idx, frame_path in enumerate(tqdm(sorted(img_paths), desc="Pass 1: Extracting hand bboxes")):
         frame_path = str(frame_path)
         frame_cv2 = cv2.imread(frame_path)
