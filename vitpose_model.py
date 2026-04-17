@@ -11,18 +11,18 @@ from mmpose.apis import inference_top_down_pose_model, init_pose_model, process_
 os.environ["PYOPENGL_PLATFORM"] = "egl"
 
 # project root directory
-ROOT_DIR = "./"
+ROOT_DIR = "/home/zvc/Project/hamer"
 VIT_DIR = os.path.join(ROOT_DIR, "third-party/ViTPose")
 
 class ViTPoseModel(object):
 
-    def __init__(self, parent_path, device):
+    def __init__(self, device):
         self.device = torch.device(device)
         self.model_name = 'ViTPose+-G (multi-task train, COCO)'
         self.MODEL_DICT = {
         'ViTPose+-G (multi-task train, COCO)': {
             'config': f'{VIT_DIR}/configs/wholebody/2d_kpt_sview_rgb_img/topdown_heatmap/coco-wholebody/ViTPose_huge_wholebody_256x192.py',
-            'model': f'{parent_path}/_DATA/vitpose_ckpts/vitpose+_huge/wholebody.pth',
+            'model': f'{ROOT_DIR}/_DATA/vitpose_ckpts/vitpose+_huge/wholebody.pth',
             },
         }
         self.model = self._load_model(self.model_name)
