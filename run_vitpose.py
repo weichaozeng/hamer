@@ -895,6 +895,7 @@ def main():
     parser.add_argument('--rescale_factor', type=float, default=1.3, help='Factor for padding the bbox')
     parser.add_argument('--file_type', nargs='+', default=['*.jpg', '*.png', '*.jpeg'], help='List of file extensions to consider')
     parser.add_argument('--conf', type=float, default=2.0, help='Factor for padding the bbox')
+    parser.add_argument('--type', type=str, default='EgoDexter', help='Path to pretrained model checkpoint')
     parser.add_argument('--render', dest='render', action='store_true', default=False, help='If set, render video/vis results')
     
     # New Tracker & Detector arguments
